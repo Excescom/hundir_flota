@@ -15,29 +15,40 @@ import java.util.Scanner;
  */
 public class Project_hundir_flota {
     
-     static boolean comprobaralrrededor (char[][] tableroin, int fila,char columna)
+     static boolean comprobarbarcoalrededor (char[][] tableroin, int fila,char columna)
     
             {
                
-                boolean resul=true;
-                boolean dentro=false,comrpobarbarcos=false,dentroabajoderecha=false,dentroarribaizquierda=false,dentroarribaderecha=false,dentroabajoizquierda=false,dentroderecha=false,dentroizquierda=false,dentroarriba=false,dentroabajo=false;
-               
+                boolean resul=false;
+                boolean casilla,comrpobarbarcos=false,dentroabajoderecha=false,dentroarribaizquierda=false,dentroarribaderecha=false,dentroabajoizquierda=false,dentroderecha=false,dentroizquierda=false,dentroarriba=false,dentroabajo=false;
+                casilla = comprobarbarco(tableroin,fila,columna);
                 
+                if(casilla==true)
+                {
+                    comrpobarbarcos = comprobarbarco(tableroin,fila,columna);
+                    dentroabajoderecha = comprobarbarco(tableroin,fila + 1, (char) (columna + 1));
+                    dentroarribaizquierda = comprobarbarco(tableroin,fila - 1, (char) (columna - 1));
+                    dentroarribaderecha = comprobarbarco(tableroin,fila - 1, (char) (columna + 1));
+                    dentroabajoizquierda = comprobarbarco(tableroin,fila + 1, (char) (columna - 1));
+                    dentroderecha = comprobarbarco(tableroin,fila, (char) (columna + 1));
+                    dentroizquierda = comprobarbarco(tableroin,fila, (char) (columna - 1));
+                    dentroarriba = comprobarbarco(tableroin,fila + 1,columna);
+                    dentroabajo = comprobarbarco(tableroin,fila - 1,columna);   
                 
-                    dentro = comrpobarcasilla(tableroin,fila,columna);
-                    dentroabajoderecha = comrpobarcasilla(tableroin,fila + 1, (char) (columna + 1));
-                    dentroarribaizquierda = comrpobarcasilla(tableroin,fila - 1, (char) (columna - 1));
-                    dentroarribaderecha = comrpobarcasilla(tableroin,fila - 1, (char) (columna + 1));
-                    dentroabajoizquierda = comrpobarcasilla(tableroin,fila + 1, (char) (columna - 1));
-                    dentroderecha = comrpobarcasilla(tableroin,fila, (char) (columna + 1));
-                    dentroizquierda = comrpobarcasilla(tableroin,fila, (char) (columna - 1));
-                    dentroarriba = comrpobarcasilla(tableroin,fila + 1,columna);
-                    dentroabajo = comrpobarcasilla(tableroin,fila - 1,columna);   
-                
-                    if(dentro ==  true && comrpobarbarcos == true && dentroabajoderecha == true && dentroarribaizquierda == true && dentroarribaderecha == true && dentroabajoizquierda == true && dentroderecha == true && dentroizquierda == true && dentroarriba == true && dentroabajo == true )
+                    if(comrpobarbarcos == true && dentroabajoderecha == true && dentroarribaizquierda == true && dentroarribaderecha == true && dentroabajoizquierda == true && dentroderecha == true && dentroizquierda == true && dentroarriba == true && dentroabajo == true )
                     {
                         resul = true;
-                    }       
+                    }
+                }
+                else
+                {
+                    resul = false;
+                }  
+                
+                
+                
+                
+                
         return resul;
         
     }
@@ -53,9 +64,11 @@ public class Project_hundir_flota {
         int nc = tablero[0].length;
         
         
-        
-        
-            if(fila >= nf || columna >= nc || columna >= 65 || fila <= 0 )
+            if (fila < 0 || columna < 0 )
+            {
+                resul = false;
+            }
+            else if(fila >= nf || columna >= nc )
                 {
                     resul = false;
                 } 
@@ -68,42 +81,19 @@ public class Project_hundir_flota {
     static boolean comprobarbarco(char[][] tablero,int fila,char columna)
     
     {
-        int nf = tablero.length;
         
-        int nc = tablero[0].length;
         boolean resul=true;
         boolean casilla = comrpobarcasilla(tablero,fila,columna);
         if(casilla==true)
         {
-            
-           if (fila <= 0 || fila == nf || columna <= 0 || columna >= 65 )
-            {
-                resul =true;
-            }
-            else
+
+            if(tablero[fila][columna] == 177)
                 {
-                    if(fila <= 0 || columna == 65 )
-                    {
-                        resul = true;
-                    }
-                    else
-                        {
-                            if(tablero[fila][columna] == 177)
-                            {
-                                resul = false;
-                            }  
-                        }             
-                } 
-        }
-        else
-        {
-            resul=false;
-        }
-        
-        
-        
-        
-        
+                    resul = false;
+                }  
+                                    
+        } 
+
        return resul;  
         
     }
@@ -115,7 +105,7 @@ public class Project_hundir_flota {
             
             boolean casilla = comrpobarcasilla(tabla,fila,columna);
             boolean barco = comprobarbarco(tabla,fila,columna);
-            boolean alrededor = comprobaralrrededor(tabla,fila,columna);
+            boolean alrededor = comprobarbarcoalrededor(tabla,fila,columna);
             if(casilla == true && alrededor == true && barco == true )
             {
                 resul = true;
@@ -175,7 +165,7 @@ public class Project_hundir_flota {
     {
         int fila,opt,i,cont=0,intentos=10;
         char columna;
-        boolean entra,entra2,entra3,entra4;
+        boolean entra1,entra2,entra3,entra4;
         int nf = tableroin.length;
         int[] donde;
         
@@ -186,66 +176,6 @@ public class Project_hundir_flota {
          
         
         System.out.println("Saliendo los barcos de puerto");
-        System.out.println("submarinos sumergiendose...");
-        espera();
-        //limpiar();
-        
-        for(i=0;cont < 2 ;i++)
-        {
-            entra = comprobar (tableroin,fila,columna);
-            if(entra = true )
-            {
-                tableroin[fila][columna]= 177 ;
-                cont++;               
-            }
-            fila = (int) (Math.random()*nf);
-            columna = (char) (Math.random()*nc);   
-        }
-        
-        opt = (int) (Math.random()*8);
-        donde = direccion(opt);
-        cont=0;
-        System.out.println("corbetas llegando a coordenadas...");
-        for(i=0;cont < 2 ;i++)
-            
-        {
-            entra = comprobar (tableroin,fila,columna);
-            entra2 = comprobar (tableroin,fila + donde[0], (char) (columna + donde[1]));
-            if(entra = true && entra2 ==true )
-            {
-                
-                tableroin[fila][columna]= 177 ;
-                tableroin[fila + donde[0]][columna + donde[1]]= 177 ;
-                cont++;           
-            }
-            fila = (int) (Math.random()*nf);
-            columna = (char) (Math.random()*nc);
-   
-        }
-        opt = (int) (Math.random()*8);
-        donde = direccion(opt);
-        cont=0;
-        System.out.println("destructores llegando a coordenadas...");
-        for(i=0;cont < 2 ;i++)
-            
-        {
-            entra = comprobar (tableroin,fila,columna);
-            entra2 = comprobar (tableroin,fila + donde[0], (char) (columna + donde[1]));
-            entra3 = comprobar (tableroin,fila + donde[0] + donde[0], (char) (columna + donde[1] + donde[1]));
-            
-            if(entra = true && entra2 ==true && entra3 ==true )
-            {
-                
-                tableroin[fila][columna]= 177 ;
-                tableroin[fila + donde[0]][columna + donde[1]]= 177 ;
-                tableroin[fila + donde[0] + donde[0]][columna + donde[1] + donde[1]]= 177 ;
-                cont++;           
-            }
-            fila = (int) (Math.random()*nf);
-            columna = (char) (Math.random()*nc);
-   
-        }
-        
         opt = (int) (Math.random()*8);
         donde = direccion(opt);
         cont=0;
@@ -253,11 +183,11 @@ public class Project_hundir_flota {
         for(i=0;cont < 1 ;i++)
             
         {
-            entra = comprobar (tableroin,fila,columna);
+            entra1 = comprobar (tableroin,fila,columna);
             entra2 = comprobar (tableroin,fila + donde[0], (char) (columna + donde[1]));
             entra3 = comprobar (tableroin,fila + donde[0] + donde[0], (char) (columna + donde[1] + donde[1]));
             entra4 = comprobar (tableroin,fila + donde[0] + donde[0] + donde[0], (char) (columna + donde[1] + donde[1] + donde[1]));
-            if(entra = true && entra2 ==true && entra3 ==true && entra4 ==true )
+            if(entra1 = true && entra2 ==true && entra3 ==true && entra4 ==true )
             {
                 
                 tableroin[fila][columna]= 177 ;
@@ -271,7 +201,66 @@ public class Project_hundir_flota {
    
         }
         
+        opt = (int) (Math.random()*8);
+        donde = direccion(opt);
+        cont=0;
+        System.out.println("destructores llegando a coordenadas...");
+        for(i=0;cont < 2 ;i++)
+            
+        {
+            entra1 = comprobar (tableroin,fila,columna);
+            entra2 = comprobar (tableroin,fila + donde[0], (char) (columna + donde[1]));
+            entra3 = comprobar (tableroin,fila + donde[0] + donde[0], (char) (columna + donde[1] + donde[1]));
+            
+            if(entra1 = true && entra2 ==true && entra3 ==true )
+            {
+                
+                tableroin[fila][columna]= 177 ;
+                tableroin[fila + donde[0]][columna + donde[1]]= 177 ;
+                tableroin[fila + donde[0] + donde[0]][columna + donde[1] + donde[1]]= 177 ;
+                cont++;           
+            }
+            fila = (int) (Math.random()*nf);
+            columna = (char) (Math.random()*nc);
+   
+        }
         
+        opt = (int) (Math.random()*8);
+        donde = direccion(opt);
+        cont=0;
+        System.out.println("corbetas llegando a coordenadas...");
+        for(i=0;cont < 2 ;i++)
+            
+        {
+            entra1 = comprobar (tableroin,fila,columna);
+            entra2 = comprobar (tableroin,fila + donde[0], (char) (columna + donde[1]));
+            if(entra1 = true && entra2 ==true )
+            {
+                
+                tableroin[fila][columna]= 177 ;
+                tableroin[fila + donde[0]][columna + donde[1]]= 177 ;
+                cont++;           
+            }
+            fila = (int) (Math.random()*nf);
+            columna = (char) (Math.random()*nc);
+   
+        }
+        
+        cont=0;
+        System.out.println("submarinos sumergiendose...");
+
+        for(i=0;cont < 2 ;i++)
+        {
+            entra1 = comprobar (tableroin,fila,columna);
+            if(entra1 = true )
+            {
+                tableroin[fila][columna]= 177 ;
+                cont++;               
+            }
+            fila = (int) (Math.random()*nf);
+            columna = (char) (Math.random()*nc);   
+        }
+  
        
     }
     
@@ -505,7 +494,7 @@ public class Project_hundir_flota {
         
         
     }
-    static void atomica (char[][] tableroin,char[][] tableroex, int[] puntos)
+      static void atomica (char[][] tableroin,char[][] tableroex, int[] puntos)
     {
         int aciertos=0, fallos=0;
         
