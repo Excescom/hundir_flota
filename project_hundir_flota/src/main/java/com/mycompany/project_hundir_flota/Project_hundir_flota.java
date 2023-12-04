@@ -82,12 +82,13 @@ public class Project_hundir_flota
     static boolean comprobar (char[][] tabla,int fila,char columna)
     {
         //creo las bariables
-        boolean resul;
-        boolean casilla = comrpobarcasilla(tabla,fila,columna);
-        boolean barco = comprobarbarco(tabla,fila,columna);
-        boolean alrededor = comprobarbarcoalrededor(tabla,fila,columna);
+        boolean resul,casilla,alrededor;
+        //compruebo que se puede colocar el barco
+        casilla = comrpobarcasilla(tabla,fila,columna);//miro que la casilla existe en el tablero
+       
+        alrededor = comprobarbarcoalrededor(tabla,fila,columna);//comprubebo si hay barco en la posición y sus alrededores
             
-        if(casilla == true && alrededor == true && barco == true )
+        if(casilla == true && alrededor == true )
         {
             resul = true;
         }
@@ -98,9 +99,10 @@ public class Project_hundir_flota
             
         return resul;
     }
-    //elige la dirección hacia la que se va a dirigir el barco, dependiendo de la opcón elige una dirección u otra
+    //elige la dirección hacia la que se va a dirigir el barco, dependiendo de la opcón elige una dirección u otra devolvienndo un vector
     static int[] direccion(int opt)
     {
+        //creo el vector que voy a devolver como resultado
         int num[]= new int [2];
         switch(opt)
         {
@@ -189,7 +191,7 @@ public class Project_hundir_flota
                 }
    
         }
-        
+        //comprueba si los intentos al colocar los barcos se han excedido y vuleve el resultado a false
         if (intentos == 10)
         {
            resul= false; 
@@ -202,6 +204,7 @@ public class Project_hundir_flota
             cont=0;
             System.out.println("destructores llegando a coordenadas...");
             espera(1000);
+            //coloca 2 destructores, tiene 10 intentos para colocarlos
             for(intentos=0;cont < 2 && intentos < 10 ; intentos++)
             {
                 entra1 = comprobar (tableroin,fila,columna);
@@ -215,6 +218,7 @@ public class Project_hundir_flota
                     tableroin[fila + donde[0] + donde[0]][columna + donde[1] + donde[1]]= 177 ;
                     cont++;           
                 }
+                //si no se colocan se vuelve a dar una posición aleatoria
                 else
                     {
                         fila = (int) (Math.random()*nf);
@@ -222,7 +226,7 @@ public class Project_hundir_flota
                     }
             }  
         }
-        
+        //comprueba si los intentos al colocar los barcos se han excedido y vuleve el resultado a false
         if (intentos == 10)
         {
            resul= false; 
@@ -235,6 +239,7 @@ public class Project_hundir_flota
             cont=0;
             System.out.println("corbetas llegando a coordenadas...");
             espera(1000);
+            //coloca 2 corbetas, tiene 10 intentos para colocarlos
             for(intentos=0;cont < 2 && intentos < 10 ; intentos++)
             {
                 entra1 = comprobar (tableroin,fila,columna);
@@ -246,6 +251,7 @@ public class Project_hundir_flota
                     tableroin[fila + donde[0]][columna + donde[1]]= 177 ;
                     cont++;           
                 }
+                //si no se colocan se vuelve a dar una posición aleatoria
                 else
                     {
                         fila = (int) (Math.random()*nf);
@@ -254,7 +260,7 @@ public class Project_hundir_flota
             }  
         }
         
-        
+        //comprueba si los intentos al colocar los barcos se han excedido y vuleve el resultado a false
         if (intentos == 10)
         {
             
@@ -266,7 +272,7 @@ public class Project_hundir_flota
             cont=0;
             System.out.println("submarinos sumergiendose...");
             espera(1000);
-            
+            //coloca 2 submarinos, tiene 10 intentos para colocarlos
             for(intentos=0;cont < 2 && intentos < 10 ; intentos++)
             {
                 entra1 = comprobar (tableroin,fila,columna);
@@ -276,6 +282,7 @@ public class Project_hundir_flota
                     tableroin[fila][columna]= 177 ;
                     cont++;               
                 }
+                //si no se colocan se vuelve a dar una posición aleatoria
                 else
                     {
                         fila = (int) (Math.random()*nf);
@@ -284,12 +291,12 @@ public class Project_hundir_flota
                     }
             }
         }
-        
+        //comprueba si los intentos al colocar los barcos se han excedido y vuleve el resultado a false
         if (intentos == 10)
                {  
                    resul = false;
                }
-        
+        limpiar();
         return resul;
     }
     
@@ -301,39 +308,44 @@ public class Project_hundir_flota
         sc = new Scanner(System.in);
         sc.useLocale(Locale.US);
         puntos[0]-- ;//le quito una bala al usuario
+        //creo las variables
         int fila;
         char columna;
         boolean dentro;
+        //le pregunto al usuario en qué fila quiere disparar
         System.out.println("Introduce la fila");
             fila = sc.nextInt();
+        //pregunto al usuario en que columna quiere disparar
         System.out.println("Introduce la columna");
             columna = sc.next().charAt(0);
+        //convierto las letras en un número el cual corresponda con la columna dependiendo de la letra que ha introducido en mayúscula
         if(columna > 64 && columna < 90)
         {
             columna -=65; 
         }
+        //convierto las letras en un número el cual corresponda con la columna dependiendo de la letra que ha introducido en minúscula
         else if(columna > 96 && columna < 123)
             {
                 columna -=97;
             }
-        
+        //compruebo que a la casilla que quiere disparar está dentro de la matríz
         dentro = comrpobarcasilla(tableroin,fila,columna);
-
+        //si la coordenada está dentro comprueba si ha fallado o si ha acertado
         if(dentro == true)
         {
                 if(tableroin[fila][columna] == 32)
                 {
                     System.out.println("*****FALLASTE*****");//si fallas sale esto
                     espera(1000);
-                    tableroin[fila][columna] = 216;
-                    tableroex[fila][columna] = 216 ;
+                    tableroin[fila][columna] = 216;//cambio el tablero interno la figura de disparo
+                    tableroex[fila][columna] = 216 ;//cambio el tablero externo a la figura de fallo
                 }
                 else if(tableroin[fila][columna] == 177)
                     {
                         System.out.println("!!!!ACERTASTE!!!!");//si aciertas sale esto
                         espera(1000);
-                        tableroin[fila][columna] = 216;
-                        tableroex[fila][columna] = 177;      
+                        tableroin[fila][columna] = 216;//cambio el tablero interno la figura de disparo
+                        tableroex[fila][columna] = 177;//cambio el tablero externo a la figura de barco indicando el acierto      
                     puntos[1]++ ;
                     }
                     else if(tableroin[fila][columna] == 216)
@@ -342,6 +354,7 @@ public class Project_hundir_flota
                             espera(1000);
                         }                
         }
+        //si dispara fuera le muestra lo siguiente:
         else
             {
                 System.out.println("te quito una bala porque persigues coches aparcados");//si disparas fuera del tablero sale esto
@@ -351,41 +364,51 @@ public class Project_hundir_flota
     
     static void disparorandom (char[][] tableroin,char[][] tableroex, int[] puntos)
     {
-        int fila,acierto=0;
+        //creo las variables
+        int fila;
+        boolean acierto=false;
         char columna;
         int nf = tableroin.length;
         int nc = tableroin[0].length;
         
+        //compruebo que tengo balas suficientes para disparar
         if(puntos[0] < 15)
         {
-            System.out.println("Balas insuficientes");
+            System.out.println("Balas insuficientes");//mensaje que sale en caso de no tener balas
             espera(1000);
         }
+        //en el caso de que tengas las balas suficientes
         else
             {
-                puntos[0] -=15 ;
-                fila = (int) (Math.random()*nf);
-                columna = (char) ((Math.random()*nc)+65);
+                puntos[0] -=15 ;//le quito los puntos que vale el disparo random
+                fila = (int) (Math.random()*nf);//selecciono la fila de forma aleatoria
+                columna = (char) ((Math.random()*nc)+65);//selecciono la columna de forma aleatoria
+                //convierto las letras en números que conuerden los la columna
                 if(columna > 64 && columna < 91)
                 {
                    columna -=65; 
                 }
-
-                System.out.println("buscando barco");
+                
+                //le digo al usuario que está buscando un barco al que disparar
+                System.out.println("escaneando zona buscando un barco");
                 espera(3000);
-                while(acierto !=1)
+                //un bucle que mientras que no hacierte el disparo continúa buscando un barco
+                while(acierto !=false)
                 {
+                    //si encuentra un barco hace lo soguiente
                     if(tableroin[fila][columna] == 177)
                     {
-                        tableroin[fila][columna] = 216;
-                        tableroex[fila][columna] = 177 ;
-                        acierto++;
-                        puntos[1]++;
+                        tableroin[fila][columna] = 216;//cambia el tablero interno a que ha disparado
+                        tableroex[fila][columna] = 177 ;//cambia el tablero externo indicando un acierto
+                        acierto = true;//pongo la variable acierto en true para que salga del bucle
+                        puntos[1]++;//sumo un ùnto a los barcos que ha acertado
                     }
+                    //si no encuentra barco buelve a cambiar la fila y la columna para ver si acierta
                     else
                         {
-                            fila = (int) (Math.random()*nf);
-                            columna = (char) ((Math.random()*nc)+65);
+                            fila = (int) (Math.random()*nf);//cambia la fila
+                            columna = (char) ((Math.random()*nc)+65);//cambia la columna
+                            //convierto las letras en números que conuerden los la columna
                             if(columna > 64 && columna < 90)
                             {
                                 columna -=65; 
@@ -396,47 +419,54 @@ public class Project_hundir_flota
             }
             
     }
+    //variable que realiza el disparo barrena, el cual dispara en toda una columna o en toda una fila
     static void barrena(char tablain[][],char[][] tablaex,int puntos[])
     {
+        //creo las variables
         int nf = tablain.length;
-        
         int nc = tablain[0].length;
-        int fila;
+        int fila,opt;
         char columna;
+        boolean flag;
+        
         Scanner sc;
         sc = new Scanner(System.in);
         sc.useLocale(Locale.US);
-        int opt;
         
+        //menú para preguntar al usuario si quiere disparar en una columna o una fila
         System.out.println("Introduce unna opción: ");
         System.out.println("1) fila");
         System.out.println("2) columna");
-        opt = sc.nextInt();
-         boolean flag;
-        
-        for(flag=false;flag==false;)
+        opt = sc.nextInt();//el usuario introduce la opción que quiera
+         
+        //inicializo la variable flag a false
+        flag=false;
+        //dentro de este while compruebo que la opción introducida es válida y le pregunto dónde quiere disparar
+        while(flag==false)
         {
             switch(opt)
             {
                 case 1:
                     if(nf + 2 > puntos[0] )
                     {
-                        System.out.println("Balas insuficientes");
+                        //combruebo si tiene bálas suficientes para disparar en la fila una bomba barrena
+                        System.out.println("Balas insuficientes para las filas");//le digo que no tiene bálas suficientes para disparar en la columna una bomba barrena
                         espera(1000);
-                        flag=true;
+                        flag=true;//pongo la centinela en true
                     }
                     else
                         {
+                            //resto las balas que cuesnta disaprar en la fila
                             puntos[0]= puntos[0] - (nf + 2); 
+                            //le pregunto en qué fila quiere disparar
                             System.out.println("¿en que fila quieres disparar?");
-
-                            fila = sc.nextInt();
-
+                                fila = sc.nextInt();//introduce la fila
+                            //comprueba que has disparado dentro del tablero    
                             if (fila < 0 || fila >= nf)
                             {
                                  System.out.println("te quito balas porque peinas calvos");
                                  espera(1000);
-                                 flag=true;
+                                 flag=true;//pongo la centinela en true
                             }
                             else
                             {
@@ -455,37 +485,41 @@ public class Project_hundir_flota
                                         }
 
                                 } 
-                                flag=true;
+                                flag=true;//pongo la centinela en true
                             }
                         }
                         break;
                 case 2:
+                    //combruebo si tiene bálas suficientes para disparar en la columna una bomba barrena
                     if(nc - 2 > puntos[0] )
                     {
-                        System.out.println("Balas insuficientes");
+                        System.out.println("Balas insuficientes para las columnas");//le digo que no tiene bálas suficientes para disparar en la columna una bomba barrena
                         espera(1000);
                         flag=true;
                     }
                     else
                         {
-                            puntos[0]= puntos[0] - (nc + 2); 
-                            System.out.println("¿en que columna quieres disparar?");
-                                columna = sc.next().charAt(0);
+                            puntos[0]= puntos[0] - (nc + 2);//resto los puntos que vale el disparo barrena
+                            System.out.println("¿en que columna quieres disparar?");//pregunto dónde quiere disparar
+                                columna = sc.next().charAt(0);//introduce la columna como letra
+                            //convierto las letras en un número el cual corresponda con la columna dependiendo de la letra que ha introducido en mayúscula
                             if(columna > 64 && columna < 90)
                             {
                                 columna -=65; 
                             }
+                            //convierto las letras en un número el cual corresponda con la columna dependiendo de la letra que ha introducido en minúscula
                             else if(columna > 96 && columna < 123)
                                 {
                                     columna -=97;
                                 }
-                           if (columna < 0 || columna >= nc)
-                           {
-                                System.out.println("te quito balas porque peinas calvos");
+                            //comprueba que has disparado dentro
+                            if (columna < 0 || columna >= nc)
+                            {
+                                System.out.println("te quito balas porque peinas calvos");//te mmuestra este mensaje si disparas fuera
                                 espera(1000);
-                                flag=true;
-                           }
-                           else
+                                flag=true;//pongo la centinela en true
+                            }
+                            else
                                 {
                                     if(columna > 64 && columna < 90)
                                     {
@@ -510,22 +544,24 @@ public class Project_hundir_flota
                                             }
 
                                     }
-                                    flag=true;
+                                    flag=true;//pongo la centinela en true
                                 }
                         }
                         break;
+                //si introduce una opción no válida:
                 default:
+                    //le vuelve a preguntar al usuario que opción quiere para poder ejecutar la función
                     System.out.println("Introduce unna opción válida: ");
                     System.out.println("1) fila");
                     System.out.println("2) columna");
-                    opt= sc.nextInt();                                 
+                    opt= sc.nextInt();//introduce la opción por teclado                                 
             } 
         }
     }
     static void atomica (char[][] tableroin,char[][] tableroex, int[] puntos)
     {
         int aciertos=0, fallos=0;
-        
+        //creo el scanner
         Scanner sc;
         sc = new Scanner(System.in);
         sc.useLocale(Locale.US);
@@ -533,7 +569,7 @@ public class Project_hundir_flota
         char columna;
         
         
-        //comprueba si tienes balas para esto
+        //comprueba si tienes balas para la bomba atómica
         if(puntos[0] >= 10)
         {
             puntos[0] -= 10;
@@ -551,6 +587,7 @@ public class Project_hundir_flota
                 {
                     columna -=97;
                 }
+            //comprueba todas las direcciones a las que va a disparar
             boolean dentro = comrpobarcasilla(tableroin,fila,columna);
             boolean dentroabajoderecha = comrpobarcasilla(tableroin,fila + 1, (char) (columna + 1));
             boolean dentroarribaizquierda = comrpobarcasilla(tableroin,fila - 1, (char) (columna - 1));
@@ -561,7 +598,7 @@ public class Project_hundir_flota
             boolean dentroarriba = comrpobarcasilla(tableroin,fila + 1,columna);
             boolean dentroabajo = comrpobarcasilla(tableroin,fila - 1,columna);
                 
-            //comprueba y discapara en un cuadrado
+            //comprueba si está disparando desntro de la matríz y discapara en un cuadrado en caso de que dispare dentro
             if(dentro == true && tableroin[fila][columna] != 216)
             {
                 if(tableroin[fila][columna] == 32)
@@ -845,7 +882,7 @@ public class Project_hundir_flota
         //inicializo estas variables para poder calcular el coste de balas de la bomba barrena
         int nf = tablain.length;
         int nc = tablain[0].length;
-        
+        //se imprime por pantalla el menú de opciones a elegir que tiene el usuario
         System.out.println();
         System.out.println("opciones:");
         System.out.println();
@@ -860,7 +897,8 @@ public class Project_hundir_flota
     //pequeño manual para entender como funciona el juego
     static void tutorial()
     {
-        limpiar();
+        limpiar();//limpio la pantalla
+        //le muestroo el mabual al usuario
         System.out.println("barcos a encontrar:");
         System.out.println();
         System.out.println("2 submarinos: \t \t ± ±");
@@ -877,8 +915,8 @@ public class Project_hundir_flota
         System.out.println("5) pista \t \t |dispara a un barco de forma aleatoria.");
         System.out.println();
         
-        System.out.println("Presione enter para continuar...");
-            new java.util.Scanner(System.in).nextLine();    
+        System.out.println("Presione enter para continuar...");//le digo al usuario que presione la tecla enter para continuar
+            new java.util.Scanner(System.in).nextLine();//espera a que el usuario pulse enter para salirse del tutorial   
     }
 
     static void flash(char[][] tablain, int[] balas)      
@@ -909,6 +947,7 @@ public class Project_hundir_flota
         {
         }
     }
+    
     //esta función limpia la pantalla el windows y en linux
     static void limpiar()
     {
@@ -991,6 +1030,22 @@ public class Project_hundir_flota
         boolean barcoscolocados = colocarbarcos(tablain); 
         if (barcoscolocados == true)
         {
+            //mensaje que sale para dar inmersión al usuario de que se está escanenado la zona para buscar los barcos
+            System.out.print("ESCANEANDO LA ZONA");
+            espera(500);
+            System.out.print(".");
+            espera(500);
+            System.out.print(".");
+            espera(500);
+            System.out.print(".");
+            espera(500);
+            System.out.print(".");
+            espera(500);
+            System.out.print(".");
+            espera(500);
+            System.out.println(".");
+            limpiar();
+            
             mostrarmatriz(tablaex);
             System.out.println();
             mostrarbalas(puntos);
@@ -1037,17 +1092,24 @@ public class Project_hundir_flota
             if(puntos[1]==16)//comprueba que los puntos son 16, es decir, que has ganado
             {
                 System.out.println("ILLOOOOO ONDEVÉ QUE Á GANAO");//le muestra un mensaje al usuario indicando que ha ganado
+                espera(3000);
             }
             else
                 {
+                    limpiar();//limpia l apantalla antes de mostrar el resultado
                     System.out.println("NAAAAAA QUE MALO HAS PERDIO");//le muestra un mensaje al usuario mostrando que ha perdido
                     System.out.println("ESTA ES LA TABLA PRNGAO");//le dice al usuario que le va a mostrar la tabla para que pueda ver los barcos que le quedan por disparar
                     mostrarmatriz(tablain);//le mustra la tabla con los barcos al usario 
+                    System.out.println("Presione enter para terminar el juego");//le digo al usuario que presione la tecla enter para continuar
+                        new java.util.Scanner(System.in).nextLine();//espera a que el usuario pulse enter para salirse del juego
+                       
                 }       
         }
         else
-            {
+            {               
                 System.out.println("No se han colocado los barcos correctamente, inica el programa de nuevo");//mensaje qie te muestra si los barcos no se han colocado correctamente
+                System.out.println("Presione enter para terminar el juego");//le digo al usuario que presione la tecla enter para continuar
+                        new java.util.Scanner(System.in).nextLine();//espera a que el usuario pulse enter para salirse del juego
             }       
     }     
 }
