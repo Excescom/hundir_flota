@@ -188,6 +188,8 @@ public class Project_hundir_flota
                 {
                     fila = (int) (Math.random()*nf);
                     columna = (char) (Math.random()*nc);
+                    opt = (int) (Math.random()*8);
+                    donde = direccion(opt);
                 }
    
         }
@@ -207,6 +209,7 @@ public class Project_hundir_flota
             //coloca 2 destructores, tiene 10 intentos para colocarlos
             for(intentos=0;cont < 2 && intentos < 10 ; intentos++)
             {
+                //compruebo que se puede poner el barco en la posición que le ha tocado de forma aleatoria
                 entra1 = comprobar (tableroin,fila,columna);
                 entra2 = comprobar (tableroin,fila + donde[0], (char) (columna + donde[1]));
                 entra3 = comprobar (tableroin,fila + donde[0] + donde[0], (char) (columna + donde[1] + donde[1]));
@@ -222,7 +225,9 @@ public class Project_hundir_flota
                 else
                     {
                         fila = (int) (Math.random()*nf);
-                        columna = (char) (Math.random()*nc);               
+                        columna = (char) (Math.random()*nc); 
+                        opt = (int) (Math.random()*8);
+                        donde = direccion(opt);
                     }
             }  
         }
@@ -242,6 +247,7 @@ public class Project_hundir_flota
             //coloca 2 corbetas, tiene 10 intentos para colocarlos
             for(intentos=0;cont < 2 && intentos < 10 ; intentos++)
             {
+                //compruebo que se puede poner el barco en la posición que le ha tocado de forma aleatoria
                 entra1 = comprobar (tableroin,fila,columna);
                 entra2 = comprobar (tableroin,fila + donde[0], (char) (columna + donde[1]));
                 
@@ -255,7 +261,9 @@ public class Project_hundir_flota
                 else
                     {
                         fila = (int) (Math.random()*nf);
-                        columna = (char) (Math.random()*nc);  
+                        columna = (char) (Math.random()*nc);
+                        opt = (int) (Math.random()*8);
+                        donde = direccion(opt);
                     }
             }  
         }
@@ -275,6 +283,7 @@ public class Project_hundir_flota
             //coloca 2 submarinos, tiene 10 intentos para colocarlos
             for(intentos=0;cont < 2 && intentos < 10 ; intentos++)
             {
+                //compruebo que se puede poner el barco en la posición que le ha tocado de forma aleatoria
                 entra1 = comprobar (tableroin,fila,columna);
                 
                 if(entra1 == true )
@@ -287,6 +296,8 @@ public class Project_hundir_flota
                     {
                         fila = (int) (Math.random()*nf);
                         columna = (char) (Math.random()*nc);
+                        opt = (int) (Math.random()*8);
+                        donde = direccion(opt);
                             
                     }
             }
@@ -464,24 +475,30 @@ public class Project_hundir_flota
                             //comprueba que has disparado dentro del tablero    
                             if (fila < 0 || fila >= nf)
                             {
-                                 System.out.println("te quito balas porque peinas calvos");
+                                 System.out.println("te quito balas porque peinas calvos");//te pongo este mensaje si te sales de la matriz
                                  espera(1000);
                                  flag=true;//pongo la centinela en true
                             }
                             else
-                            {
+                            {   //recorre toda la fila comprobando si hay barco
                                 for(int i=0;i<nc;i++)
                                 {
-                                    if(tablain[fila][i] == 177)
+                                    if(tablain[fila][i] == 216)//en caso de que encuentre una fila en la que ha disparado
                                     {
-                                        tablain[fila][i]=216;
-                                        tablaex[fila][i]=177;
-                                        puntos[1]++;
+                                        i = nc;//termino el bucle igualando la i al núemro de columna
+                                        System.out.println("te quito balas porque persigues coches aparcados");//le muestro este mensaje al usuario
+                                        espera(1000);
                                     }
-                                    else if(tablain[fila][i] == 32)
+                                    else if(tablain[fila][i] == 177)//comprueba si hay barco
                                         {
-                                            tablain[fila][i]=216; 
-                                            tablaex[fila][i]=216;
+                                        tablain[fila][i]=216;//guardo en el tablero interno que ha disparado
+                                        tablaex[fila][i]=177;//le muestra al usuario que ha dado en un barco
+                                        puntos[1]++;//sumo un barco a los puntos
+                                        }
+                                    else if(tablain[fila][i] == 32)//comprueba si hay agua
+                                        {
+                                            tablain[fila][i]=216;//guardo en el tablero interno que ha disparado
+                                            tablaex[fila][i]=216;//muestro que ha disparado y fallado
                                         }
 
                                 } 
@@ -531,18 +548,23 @@ public class Project_hundir_flota
                                         }
                                     for(int i=0;i<nf;i++)
                                     {
-                                        if(tablain[i][columna] == 177)
+                                        if(tablain[i][columna] == 216)//en caso de que encuentre una fila en la que ha disparado
                                         {
-                                            tablain[i][columna]=216;
-                                            tablaex[i][columna]=177;
-                                            puntos[1]++;
+                                            i = nf;//igualo la i a el número de fila para terminal el bucle
+                                            System.out.println("te quito balas porque persigues coches aparcados");//le muestro este mensaje al usuario
+                                            espera(1000);
+                                        }   
+                                        else if(tablain[i][columna] == 177)//comprueba si hay barco
+                                        {
+                                            tablain[i][columna]=216;//guardo en el tablero interno que ha disparado
+                                            tablaex[i][columna]=177;//le muestra al usuario que ha dado en un barco
+                                            puntos[1]++;//sumo un barco a los puntos
                                         }
-                                        else if(tablain[i][columna] == 32)
+                                        else if(tablain[i][columna] == 32)//comprueba si hay agua
                                             {
-                                                tablain[i][columna]=216; 
-                                                tablaex[i][columna]=216;
+                                                tablain[i][columna]=216;//guardo en el tablero interno que ha disparado
+                                                tablaex[i][columna]=216;//muestro que ha disparado y fallado
                                             }
-
                                     }
                                     flag=true;//pongo la centinela en true
                                 }
@@ -560,7 +582,7 @@ public class Project_hundir_flota
     }
     static void atomica (char[][] tableroin,char[][] tableroex, int[] puntos)
     {
-        int aciertos=0, fallos=0;
+        int aciertos=0, fallos=0;//variables que sirven para contar los aciertos y los fallos de las bombas para mostrarlo luego
         //creo el scanner
         Scanner sc;
         sc = new Scanner(System.in);
@@ -598,7 +620,7 @@ public class Project_hundir_flota
             boolean dentroarriba = comrpobarcasilla(tableroin,fila + 1,columna);
             boolean dentroabajo = comrpobarcasilla(tableroin,fila - 1,columna);
                 
-            //comprueba si está disparando desntro de la matríz y discapara en un cuadrado en caso de que dispare dentro
+            //comprueba si está disparando dentro de la matríz y discapara en un cuadrado en caso de que dispare dentro
             if(dentro == true && tableroin[fila][columna] != 216)
             {
                 if(tableroin[fila][columna] == 32)
@@ -805,19 +827,18 @@ public class Project_hundir_flota
                     {
                         fallos++;
                     }
+                //te muestra la cantidad de fallos y la cantidad de aciertos que has tenido
+                System.out.println("ACERTASTE "+aciertos+" y fallaste "+fallos);
+                espera(2000);
             }
+            //en caso de que dispare fuera
             else
                 {
                     System.out.println("te quito 10 balas porque persigues cohes aparcados");
-                    espera(1000);
-                }
-            
-            if(puntos[0] < 10)
-            {
-                System.out.println("ACERTASTE "+aciertos+" y fallaste "+fallos);
-                espera(1000);
-            }
+                    espera(1500);
+                }   
         }
+        //en caso de que no tenga balas suficientes
         else
             {
                 System.out.println("balas insuficientes"); 
@@ -826,6 +847,8 @@ public class Project_hundir_flota
             
   
     }
+    
+    //te muestra por pantalla la matríz que le introduzcas con forma de tablero
     static void mostrarmatriz(char num[][] )
     {
         int nf = num.length;
@@ -978,17 +1001,38 @@ public class Project_hundir_flota
     
     public static void main(String[] args) 
     {
+        limpiar();//limpia toda la pantalla antes de empezar el juego
         int fila,columna,opt,i; 
         //creo un vector en el que se van a guardar las balas y la cantidad de aciertos que tiene
         int puntos[]= new int [2];
         Scanner sc;
         sc = new Scanner(System.in);
         sc.useLocale(Locale.US);
-            
+        //pequeña introducción antes de mepezar el juego
+        System.out.println("HUNDIR LA FLOTA EL VIDEOJUEGO");
+        System.out.println();
+        System.out.print(
+            ".\n" +
+            "°°°°°°°°°°°°|\n" +
+            "°°°°°°°°°°°°|_\n" +
+            "°°°°°°°°°°°°|__\n" +
+            "°°°°°°°°°°°°|___\n" +
+            "°°°°°°°°°°°°|____\n" +
+            "°°°°°°°°°°°°|_____\n" +
+            "°°°°°°°°°°°°|______\n" +
+            "°°°°°°______|_____________​__\n" +
+            "~~~~\\____________________/​~~~~\n" +
+            ",.-~*´¨¯¨`*•~-.¸,.-~*´¨¯¨`​*•~-.¸,.-~*´¨¯¨`*•~-.¸,.-~​*´¨¯¨`*•~-.¸,.-~*´¨¯¨`*•~-​.¸,.-~*´¨¯¨`*•~-.¸,.-~*´¨¯​¨`*•~-.¸\n"
+        );
+        System.out.println();
+        System.out.println("PULSA INTRO PARA INICIAR EL JUEGO");
+            new java.util.Scanner(System.in).nextLine();
+        //empieza el juego
         System.out.println("Introduce el tamaño que quieres que tenga la fila");
             fila = sc.nextInt();
         System.out.println("Introduce el tamaño que quieres que tenga la columna");
             columna = sc.nextInt();
+        limpiar();//limpia la pantalla antes de empezar el juego
             
         //comprueba que la tabla que has introducido no sea demasiada grande ni demasiada pequeña,
         //en caso de ser incompatible te la vuelve a pedir
