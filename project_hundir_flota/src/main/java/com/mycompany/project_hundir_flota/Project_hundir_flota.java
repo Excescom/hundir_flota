@@ -157,14 +157,13 @@ public class Project_hundir_flota
         columna = (char) (Math.random()*nc);
         //muestro este mensaje para avisar al usuario que se están colocando lso barcos
         System.out.println("Saliendo los barcos de puerto");
-        espera(1500);
+
         //escojo de forma aleatoria la dirección a la que se va a dirigir el barco
         opt = (int) (Math.random()*8);
         //le mando la opción a la función para que escoja la dirección    
         donde = direccion(opt);
         //muestro este mensaje para avisar al usuario que se está colocando el porta aviones
         System.out.println("porta aviones llegando a coordenadas...");
-        espera(1000);
         //coloco 1 portaaviones, si no se puede colocar en 10 intentos devuleve false
         for(intentos=0;cont < 1 && intentos < 10 ; intentos++)  
         {
@@ -205,7 +204,6 @@ public class Project_hundir_flota
             donde = direccion(opt);
             cont=0;
             System.out.println("destructores llegando a coordenadas...");
-            espera(1000);
             //coloca 2 destructores, tiene 10 intentos para colocarlos
             for(intentos=0;cont < 2 && intentos < 10 ; intentos++)
             {
@@ -243,7 +241,6 @@ public class Project_hundir_flota
             donde = direccion(opt);
             cont=0;
             System.out.println("corbetas llegando a coordenadas...");
-            espera(1000);
             //coloca 2 corbetas, tiene 10 intentos para colocarlos
             for(intentos=0;cont < 2 && intentos < 10 ; intentos++)
             {
@@ -279,7 +276,6 @@ public class Project_hundir_flota
         {
             cont=0;
             System.out.println("submarinos sumergiendose...");
-            espera(1000);
             //coloca 2 submarinos, tiene 10 intentos para colocarlos
             for(intentos=0;cont < 2 && intentos < 10 ; intentos++)
             {
@@ -307,6 +303,8 @@ public class Project_hundir_flota
                {  
                    resul = false;
                }
+        System.out.println("Presione enter para terminar");//le digo al usuario que presione la tecla enter para continuar
+        new java.util.Scanner(System.in).nextLine();//espera a que el usuario pulse enter para iniciar el juego
         limpiar();
         return resul;
     }
@@ -404,15 +402,16 @@ public class Project_hundir_flota
                 System.out.println("escaneando zona buscando un barco");
                 espera(3000);
                 //un bucle que mientras que no hacierte el disparo continúa buscando un barco
-                while(acierto !=false)
+                while(acierto == false)
                 {
                     //si encuentra un barco hace lo soguiente
                     if(tableroin[fila][columna] == 177)
                     {
                         tableroin[fila][columna] = 216;//cambia el tablero interno a que ha disparado
                         tableroex[fila][columna] = 177 ;//cambia el tablero externo indicando un acierto
-                        acierto = true;//pongo la variable acierto en true para que salga del bucle
                         puntos[1]++;//sumo un ùnto a los barcos que ha acertado
+                        acierto = true;//pongo la variable acierto en true para que salga del bucle
+                        
                     }
                     //si no encuentra barco buelve a cambiar la fila y la columna para ver si acierta
                     else
@@ -420,7 +419,7 @@ public class Project_hundir_flota
                             fila = (int) (Math.random()*nf);//cambia la fila
                             columna = (char) ((Math.random()*nc)+65);//cambia la columna
                             //convierto las letras en números que conuerden los la columna
-                            if(columna > 64 && columna < 90)
+                            if(columna > 64 && columna < 91)
                             {
                                 columna -=65; 
                             }
@@ -1013,14 +1012,14 @@ public class Project_hundir_flota
         System.out.println();
         System.out.print(
             ".\n" +
-            "°°°°°°°°°°°°|\n" +
-            "°°°°°°°°°°°°|_\n" +
-            "°°°°°°°°°°°°|__\n" +
-            "°°°°°°°°°°°°|___\n" +
-            "°°°°°°°°°°°°|____\n" +
-            "°°°°°°°°°°°°|_____\n" +
-            "°°°°°°°°°°°°|______\n" +
-            "°°°°°°______|_____________​__\n" +
+            "            |\n" +
+            "            |_\n" +
+            "            |__\n" +
+            "            |___\n" +
+            "            |____\n" +
+            "            |_____\n" +
+            "            |______\n" +
+            "      ______|_____________​__\n" +
             "~~~~\\____________________/​~~~~\n" +
             ",.-~*´¨¯¨`*•~-.¸,.-~*´¨¯¨`​*•~-.¸,.-~*´¨¯¨`*•~-.¸,.-~​*´¨¯¨`*•~-.¸,.-~*´¨¯¨`*•~-​.¸,.-~*´¨¯¨`*•~-.¸,.-~*´¨¯​¨`*•~-.¸\n"
         );
@@ -1031,9 +1030,7 @@ public class Project_hundir_flota
         System.out.println("Introduce el tamaño que quieres que tenga la fila");
             fila = sc.nextInt();
         System.out.println("Introduce el tamaño que quieres que tenga la columna");
-            columna = sc.nextInt();
-        limpiar();//limpia la pantalla antes de empezar el juego
-            
+            columna = sc.nextInt();   
         //comprueba que la tabla que has introducido no sea demasiada grande ni demasiada pequeña,
         //en caso de ser incompatible te la vuelve a pedir
         while(fila * columna < 56 || fila > 26 || columna >26 )//compruebo que la tabla tenga como mínimo 56 celdas y que como máximo las filas y las columnas midan 25
@@ -1045,7 +1042,7 @@ public class Project_hundir_flota
             System.out.println("Introduce la columna");
                 columna = sc.nextInt();
         }
-        limpiar();//limpio la pantalla después de pedir las columnas para que se vea bonito
+        limpiar();//limpia la pantalla antes de empezar el juego
             
         char tablain[][]= new char [fila][columna];
         char tablaex[][]= new char [fila][columna];
